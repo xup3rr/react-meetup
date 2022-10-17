@@ -1,6 +1,7 @@
 import AllMeetupsPage from "./pages/AllMeetupsPage";
 import FavoritesPage from "./pages/Favorites";
 import NewMeetupsPage from "./pages/NewMeetup";
+import NotFoundPage from "./pages/NotFound";
 
 import MainNavigation from "./components/layout/MainNavigation";
 import Layout from "./components/layout/Layout";
@@ -16,6 +17,7 @@ function App() {
           <Route index element={<AllMeetupsPage />} />
           <Route path="new" element={<NewMeetupsPage />} />
           <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </div>
