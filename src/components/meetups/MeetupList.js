@@ -1,26 +1,36 @@
 import MeetupItem from "./MeetupItem";
 import classes from "./MeetupList.module.css";
-import { useFetch } from "../../util-hooks/useFetch";
+import { useEffect } from "react";
+import { useAtom } from "jotai";
+import { FetchMeetupsAtom } from "../../store/MeetupAtom";
 
 export default function MeetupList() {
-  const { data } = useFetch({
-    url: "/data.json",
-  });
+  const [meetups, fetchMeetups] = useAtom(FetchMeetupsAtom);
 
-  if (!data) return <p>Loading...</p>;
+  useEffect(() => {
+    if (!meetups) {
+      fetchMeetups("/data.json");
+    }
+  }, []);
+
+  if (!meetups) return <p>Loading...</p>;
+
+  if (meetups.length === 0) return <p>No Meetups found</p>;
 
   return (
     <>
       <h1>All Meetups</h1>
-      <ul className={classes.list}>
-        {data.map((e) => {
-          return (
-            <li key={e.id}>
-              <MeetupItem item={e} />
-            </li>
-          );
-        })}
-      </ul>
+      {meetups.length > 0 && (
+        <ul className={classes.list}>
+          {meetups.map((e) => {
+            return (
+              <li key={e.id}>
+                <MeetupItem item={e} />
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </>
   );
 }
