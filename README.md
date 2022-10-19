@@ -1,70 +1,92 @@
-# Getting Started with Create React App
+# React Meetup
+
+To start the project:
+
+1. `git clone https://github.com/xup3rr/react-meetup`
+2. `yarn` or `npm install`, wait till the instalation finish
+3. `yarn start` or `npm start`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+`npm start` (Run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+`npm test` (Launches the test runner in the interactive watch mode.)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`npm run build` (Builds the app for production to the **build** folder.)
 
-### `npm test`
+### Packages
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+"react-router-dom": "^6.4.2" (Navegar entre las paginas, reflejado el cambio en la url para mejorar el SEO)
 
-### `npm run build`
+"react-hook-form": "^7.38.0" (Gestion y validacion de formularios)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+"jotai": "^1.8.6", (Gestion de estados globales) `MeetupAtom` contiene todos los meetups del muck api call asi como los que se van adicionando desde el formulario. `MeetupFavoriteAtom` guarda los meetups selecionados como favoritos (se adicionan o eliminan al hacer click en su respectivo botton dentro de cada MeetupItem)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Technical Test
 
-### `npm run eject`
+Teniendo como premisa este modelo, se detecta un problema de escalabilidad, el cual rompe con los principios SOLID. Si se agrega otro tipo de Servicio habría que modifical el modelo. Todo módulo deben estar abierto para extensión pero cerrado para modificación (principio open close).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Para solucionarlo, propongo el siguiente Diagrama y correspondiente Pseudocódigo.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![diagrama](public/diagrama.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+La clase RegisteredUser itera sobre todos sus servicios sumando el precio de los mismos (service.getServicePrice)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Dentro de la clase Service el método getServicePrice suma el precio de su MultimediaContent. Al ser una clase abstract esta nunca se llega a instanciar. this.getMultimediaPrice se implementa en las clases hijas y retorna su precio correspondiente (StreamingService , DownloadService).
 
-## Learn More
+Adicionar el método getMultimediaPrice a la clase abstracta Service el cual sera implementado en cada una de sus clases hijas (StreamingService , DownloadService).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Para el AditionalFee, dentro de la clase MultimediaContent, este método siempre retorna 0. Dentro de la clase PremiumContent se sobreescribe (override) retornando el fee de contenido premium.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+class RegisteredUser {
+  constructor(services = []) {
+    this.services = services;
+  }
 
-### Code Splitting
+  public getTotal() {
+    let total = 0;
+    this.services.forEach((service,index) => {
+      total += service.getServicePrice();
+    });
+    return total;
+  }
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+abstract class Service{
+  MultimediaContent content;
 
-### Analyzing the Bundle Size
+  public getServicePrice() {
+    return this.getMultimediaPrice() + content.getAditionalFee();
+  }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  abstract float getMultimediaPrice();
+}
 
-### Making a Progressive Web App
+//same with DownloadService (return downloadPrice)
+class StreamingService is Service {
+  protected override float getMultimediaPrice() {
+    return content.streamingPrice;
+  }
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+class MultimediaContent {
+  public float getAditionalFee()   {
+    return 0;
+  }
+}
 
-### Advanced Configuration
+public class PremiumContent is MultimediaContent {
+  private float additionalFee;
+  public override float getAditionalFee() {
+    return additionalFee;
+  }
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
