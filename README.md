@@ -24,7 +24,7 @@ In the project directory, you can run:
 
 "react-hook-form": "^7.38.0" (Gestion y validacion de formularios)
 
-"jotai": "^1.8.6", (Gestion de estados globales) `MeetupAtom` contiene todos los meetups del muck api call asi como los que se van adicionando desde el formulario. `MeetupFavoriteAtom` guarda los meetups selecionados como favoritos (se adicionan o eliminan al hacer click en su respectivo botton dentro de cada MeetupItem)
+"jotai": "^1.8.6", (Gestion de estados globales) `MeetupAtom` contiene todos los meetups del muck api call asi como los que se van adicionando desde el formulario. `MeetupFavoriteAtom` guarda los meetups selecionados como favoritos (se adicionan o eliminan al hacer click en su respectivo button dentro de cada MeetupItem)
 
 ---
 
@@ -37,12 +37,6 @@ Para solucionarlo, propongo el siguiente Diagrama y correspondiente Pseudocódig
 ![diagrama](public/diagrama.png)
 
 La clase RegisteredUser itera sobre todos sus servicios sumando el precio de los mismos (service.getServicePrice)
-
-Dentro de la clase Service el método getServicePrice suma el precio de su MultimediaContent. Al ser una clase abstract esta nunca se llega a instanciar. this.getMultimediaPrice se implementa en las clases hijas y retorna su precio correspondiente (StreamingService , DownloadService).
-
-Adicionar el método getMultimediaPrice a la clase abstracta Service el cual sera implementado en cada una de sus clases hijas (StreamingService , DownloadService).
-
-Para el AditionalFee, dentro de la clase MultimediaContent, este método siempre retorna 0. Dentro de la clase PremiumContent se sobreescribe (override) retornando el fee de contenido premium.
 
 ```js
 class RegisteredUser {
@@ -58,7 +52,11 @@ class RegisteredUser {
     return total;
   }
 }
+```
 
+Dentro de la clase Service el método getServicePrice suma el precio de MultimediaContentPrice más getAditionalFee. Al ser una clase abstract esta nunca se llega a instanciar. this.getMultimediaPrice se implementa en las clases hijas y retorna su precio correspondiente (StreamingService , DownloadService).
+
+```javascript
 abstract class Service{
   MultimediaContent content;
 
@@ -75,7 +73,11 @@ class StreamingService is Service {
     return content.streamingPrice;
   }
 }
+```
 
+Para el AditionalFee, dentro de la clase MultimediaContent, este método siempre retorna 0. Dentro de la clase PremiumContent la cual es hija se sobreescribe (override) retornando el fee de contenido premium.
+
+```javascript
 class MultimediaContent {
   public float getAditionalFee()   {
     return 0;
