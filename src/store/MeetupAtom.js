@@ -2,14 +2,11 @@ import { atom } from "jotai";
 
 const MeetupsAtom = atom(null);
 
-const FetchMeetupsAtom = atom(
-  (get) => get(MeetupsAtom),
-  async (_, set, url) => {
-    const response = await fetch(url);
-    const json = await response.json();
-    set(MeetupsAtom, json);
-  }
-);
+const FetchMeetupsAtom = atom(null, async (_, set, url) => {
+  const response = await fetch(url);
+  const json = await response.json();
+  set(MeetupsAtom, json);
+});
 
 const NewMeetupAtom = atom(null, async (get, set, newMeetup) => {
   const meetups = get(MeetupsAtom);
@@ -17,4 +14,4 @@ const NewMeetupAtom = atom(null, async (get, set, newMeetup) => {
   set(MeetupsAtom, [...meetups, newMeetup]);
 });
 
-export { FetchMeetupsAtom, NewMeetupAtom };
+export { MeetupsAtom, FetchMeetupsAtom, NewMeetupAtom };

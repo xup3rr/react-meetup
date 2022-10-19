@@ -2,10 +2,11 @@ import MeetupItem from "./MeetupItem";
 import classes from "./MeetupList.module.css";
 import { useEffect } from "react";
 import { useAtom } from "jotai";
-import { FetchMeetupsAtom } from "../../store/MeetupAtom";
+import { MeetupsAtom, FetchMeetupsAtom } from "../../store/MeetupAtom";
 
 export default function MeetupList() {
-  const [meetups, fetchMeetups] = useAtom(FetchMeetupsAtom);
+  const [meetups] = useAtom(MeetupsAtom);
+  const [, fetchMeetups] = useAtom(FetchMeetupsAtom);
 
   useEffect(() => {
     if (!meetups) {
