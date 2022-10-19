@@ -64,7 +64,7 @@ export default function NewMeetupForm() {
           <button>Add Meetup</button>
         </div>
       </form>
-      {formMessage && <p>{formMessage}</p>}
+      {formMessage && <p className={classes.message}>{formMessage}</p>}
     </Card>
   );
 }
