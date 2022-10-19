@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import classes from "./MainNavigation.module.css";
 
+import { MeetupFavoriteAtom } from "../../store/MeetupFavoriteAtom";
+import { useAtom } from "jotai";
+
 export default function MainNavigation() {
+  const [meetupFavorites] = useAtom(MeetupFavoriteAtom);
+
   return (
     <header className={classes.header}>
       <div className={classes.logo}>React Meetups</div>
@@ -17,7 +22,7 @@ export default function MainNavigation() {
 
           <li>
             <Link to="/favorites">My Favorites</Link>
-            <span className={classes.badge}>{0}</span>
+            <span className={classes.badge}>{meetupFavorites.length}</span>
           </li>
         </ul>
       </nav>
