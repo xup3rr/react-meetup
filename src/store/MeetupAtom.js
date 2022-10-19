@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-const MeetupsAtom = atom([]);
+const MeetupsAtom = atom(null);
 
 const FetchMeetupsAtom = atom(
   (get) => get(MeetupsAtom),
