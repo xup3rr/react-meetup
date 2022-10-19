@@ -2,10 +2,8 @@ import { atom } from "jotai";
 
 const MeetupFavoriteAtom = atom([]);
 
-const AddMeetupFavoriteAtom = atom(
-  (get) => get(MeetupFavoriteAtom),
-  async (get, set, newMeetup) =>
-    set(MeetupFavoriteAtom, [...get(MeetupFavoriteAtom), newMeetup])
+const AddMeetupFavoriteAtom = atom(null, async (get, set, newMeetup) =>
+  set(MeetupFavoriteAtom, [...get(MeetupFavoriteAtom), newMeetup])
 );
 
 const RemoveMeetupFavoriteAtom = atom(null, async (get, set, meetup) => {
