@@ -18,13 +18,15 @@ In the project directory, you can run:
 
 `npm run build` (Builds the app for production to the **build** folder.)
 
-### Packages
+### Dependencies
 
 "react-router-dom": "^6.4.2" (Navegar entre las paginas, reflejado el cambio en la url para mejorar el SEO)
 
 "react-hook-form": "^7.38.0" (Gestion y validacion de formularios)
 
-"jotai": "^1.8.6", (Gestion de estados globales) `MeetupAtom` contiene todos los meetups del muck api call asi como los que se van adicionando desde el formulario. `MeetupFavoriteAtom` guarda los meetups selecionados como favoritos (se adicionan o eliminan al hacer click en su respectivo button dentro de cada MeetupItem)
+"jotai": "^1.8.6", (Gestion de estados globales) `MeetupAtom` contiene todos los meetups del muck api call asi como los que se van adicionando desde el formulario. `MeetupFavoriteAtom` guarda los meetups selecionados como favoritos. Esto estados se guardan en el Local Storage del navegador.
+
+"framer-motion": "^7.6.1", (Motion animations)
 
 ---
 
