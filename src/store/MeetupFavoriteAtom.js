@@ -1,6 +1,7 @@
 import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-const MeetupFavoriteAtom = atom([]);
+const MeetupFavoriteAtom = atomWithStorage("meetupsFavorites", []);
 
 const AddMeetupFavoriteAtom = atom(null, async (get, set, newMeetup) =>
   set(MeetupFavoriteAtom, [...get(MeetupFavoriteAtom), newMeetup])

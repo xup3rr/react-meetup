@@ -1,6 +1,7 @@
 import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-const MeetupsAtom = atom(null);
+const MeetupsAtom = atomWithStorage("meetups", null);
 
 const FetchMeetupsAtom = atom(null, async (_, set, url) => {
   const response = await fetch(url);
