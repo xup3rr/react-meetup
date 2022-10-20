@@ -15,7 +15,7 @@ export default function MeetupItem({ item }) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    setIsFavorite(meetupFavorites.includes(item));
+    setIsFavorite(meetupFavorites.some((e) => e.id === item.id));
   }, [meetupFavorites, item]);
 
   const Button = (favorite) => {
