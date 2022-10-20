@@ -3,6 +3,7 @@ import classes from "./MainNavigation.module.css";
 import { useState, useEffect } from "react";
 import { MeetupFavoriteAtom } from "../../store/MeetupFavoriteAtom";
 import { useAtom } from "jotai";
+import { motion } from "framer-motion";
 
 export default function MainNavigation() {
   const [meetupFavorites] = useAtom(MeetupFavoriteAtom);
@@ -21,7 +22,11 @@ export default function MainNavigation() {
   }, [scrollPosition]);
 
   return (
-    <header className={`${visible && classes.header}`}>
+    <motion.header
+      className={classes.header}
+      animate={{ y: visible ? 0 : "-5rem" }}
+      transition={{ duration: 0.2, delay: 0.2 }}
+    >
       <div className={classes.logo}>React Meetups</div>
       <nav>
         <ul>
@@ -39,6 +44,6 @@ export default function MainNavigation() {
           </li>
         </ul>
       </nav>
-    </header>
+    </motion.header>
   );
 }
